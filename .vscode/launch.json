@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/trile/Desktop/IDATT2202 Operativ system/Assignment_01_The_process_abstraction",
-      "program": "/Users/trile/Desktop/IDATT2202 Operativ system/Assignment_01_The_process_abstraction/build/Debug/outDebug"
+      "cwd": "/Users/trile/Desktop/IDATT2202 Operativ system",
+      "program": "/Users/trile/Desktop/IDATT2202 Operativ system/build/Debug/outDebug"
     }
   ]
 }
