@@ -1,4 +1,4 @@
-## 7.1 Synchronization Motivation
+	## 7.1 Synchronization Motivation
 - Sharing state among threads is useful because it allows threads to communicate, to coordinate work, and to share information. However, when cooperating threads use **shared** state, writing correct multi-threaded programs becomes much more difficult. *Cooperative threads* are proned to mainly three different obstacles
 	1. Program execution depends on the interleaving's of the thread's access to shared data: if two threads write a shared variable, the final value of the variable depends on which of the threads' writes finishes last 
 	2. Program execution can be nondeterministic: Different runs of the same program may produce different results. Ex: Scheduler make different scheduling decisions, processor may run at a different frequency, or another concurrently running program may affect the cache hit rate.
@@ -6,6 +6,8 @@
 
 **Structured synchronization**
 - Given all of these challenges, multi-threaded code can introduce subtle bugs. This chapter describes a structured synchronization approach to sharing state in multi-threaded programs. Rather than scattering access to shared state throughout the program and attempting ad hoc reasoning about what happens when the threads’ accesses are interleaved in various ways, we structure the program to facilitate reasoning about it and we use a set of standard synchronization primitives to control access to shared state
+
+**Busy-waiting (polling):** is when a threads spins in a loop waiting for a concurrent event to occur, consuming CPU cycles while waiting. It is a problem
 ## 7.2 Challenges
 Why are unstructured multi-threaded programs difficult to handle?
 
