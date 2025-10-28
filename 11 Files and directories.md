@@ -48,11 +48,13 @@ Once the file system har translated the file name to the file number using a dir
 - Entries in FAT are 32 bits, where 4 is reserved, leaving 28 bits on disk)
 #### 11.3.2 FFS: Fixed Tree
 
-#### 11.1.3 NTFS: Flexible Tree With Extents
+#### 11.3.3 NTFS: Flexible Tree With Extents
 **Extents:** variable-size regions of files that are each stored in contiguous region on the storage device. 
 
 Master file table (MFT)
 **Attribute records:** a variable-size data structure containing either file data or file metadata
 **Resident attribute** stores its content directly in the MFT record
 **Non-resident attribute** stores extent pointers in its MFT record and stores its content in those extents
-
+#### 11.3.4 Copy-On-Write file systems
+When updating an existing file, COW does not overwrite the existing data or metadata, but they write new version to new locations.
+- Purpose: Optimize writes by transforming random I/O updates to sequential ones. 

@@ -47,17 +47,31 @@ While block is defined as a fixed-size chunk of data storage, from 256KB to 4MB,
 
 The NTFS-style extents is therefore more scalable and robust for increase in file size.
 3. **Explain how copy-on-write (COW) helps guard against data corruption.**
-
+When updating an existing file, COW does not overwrite the existing data/metadata, but instead write new versions to new locations, which means changes are written on a newly allocated block. This implementation works like version control, providing a snapshot of any given file. If data corruption happens, such as crashing while writing to the file, the old file still lives and can be retrieved instead of overwriting both old and new memory. 
 ## 3 Security
 1. **Authentication**
 **(a) Why is it important to hash passwords with a unique salt, even if the salt can be publicly known?**
+Salt is a random string that is added to the password before hashing. Its function is to make the hash unique. If a salt is not added, different users can have their password have the same hash. The salt is meant to ensure that the hash is unique compared with another user who has the same hashed password. 
 
+A *public* salt is not the most optimal choice at first glance, but the purpose of the salt to make uniquely hashed password, so if an attacker does crack a password, the user's salted password cannot be reused against another user. If the salt is not implemented, the attacker can just iterate and compare all the password with the cracked one and have a chance of cracking another. But why not keep salt private/secret? A secret salt is called pepper, but it is kind of a hassle to set up and too may additional secrets may be referred to as "overengineering" it.
+https://security.stackexchange.com/questions/3272/password-hashing-add-salt-pepper-or-is-salt-enough
 
 **(b) Explain how a user can use a program to update the password database, while at the same time does not have read or write permissions to the password database file itself. What are the caveats of this?**
+A user can update its password DB through a program called SUID (Set user identity document) bit set. When a user executes this program, usually with `passwd [options] [username]` the program runs with the owner perms (typically root) instead of user perms. This means that even if the user lacks write and read access to the DB, the SUID program temporarily runs with elevated privileges and can modify the DB.
 
+The caveats, which i interpret as vulnerability/weaknesses of this program is the use of elevated perms. This makes the program more vulnerable for exploitation because bugs can lead to attacker gaining unathorized access to the root.
+
+https://www.geeksforgeeks.org/linux-unix/passwd-command-in-linux-with-examples/
 
 2. **Software vulnerabilities**
 **(a) Describe the problem with the well-known gets() library call. Name another library call that is safe to use that accomplishes the same thing.**
+`gets()`is a function used to read a line of input from standard input (stdin) into a character array. But it has been deprecated and removed because of its unsafe behaviour. This is because `gets()` does not limit the number of characters read, which can lead to buffer overflows if the input exceeds the allocated array size. It also does not handle errors or EOF (end-of-file) efficiently. Because it is deprecated and removed, the usage of `gets()`is also not stable.
 
-
+`fgets()`is the safer alternative
+https://www.geeksforgeeks.org/c/gets-in-c/
 **(b) Explain why a microkernel is statistically more secure than a monolithic kernel.**
+A monolithic kernel runs the entire OS on a single program (in a single address space) in kernel mode. On the other hand, the microkernel implements user and kernel services in a single address space with only the most essential functions and components are in the kernel. 
+
+Since all the components can interact directly the monolithic kernel is faster than the microkernel. But the microkernel abstracts all the important functions and have a system that is less complex than the monolithic kernel, the microkernel is more secure, less vulnerable for bugs and errors, and easier to debug. The microkernel is also easier to scale, thus it makes it easier to add security measures.
+
+https://www.geeksforgeeks.org/operating-systems/difference-between-microkernel-and-monolithic-kernel/
